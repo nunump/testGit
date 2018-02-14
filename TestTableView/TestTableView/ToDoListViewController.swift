@@ -13,7 +13,7 @@ class ToDoListViewController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var tblView: UITableView!
     
     var itemArray = ["Nunu", "Denis", "Hafid", "Entah"]
-    
+    let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +21,16 @@ class ToDoListViewController: UIViewController, UITableViewDelegate, UITableView
         tblView.delegate = self
         tblView.dataSource = self
         
+        if let item = defaults.array(forKey: "ToDoListArray") as? [String] {
+            itemArray = item
+        }
+        
+        print("didload show")
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        print("Did appear show")
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -75,9 +85,16 @@ class ToDoListViewController: UIViewController, UITableViewDelegate, UITableView
             
             // di sini adalah apa yg terjadi ketika user klik button dan alert
             
+            //save array to pc
+            //self.defaults.set(self.itemArray, value(forKey: "TodoListArray"))
+            
+            self.itemArray.append(textField.text!)
+            self.defaults.set(self.itemArray, forKey: "ToDoListArray")
+            
+            
             print("get value \(textField.text!) Success")
             print(self.itemArray.count)
-            self.itemArray.append(textField.text!)
+            
             print(self.itemArray.count)
             
             self.tblView.reloadData()
