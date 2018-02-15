@@ -26,36 +26,9 @@ class ToDoListViewController: UIViewController, UITableViewDelegate, UITableView
         
         loadItem()
         
-        // isi array defaults, gak usah jg gak papa
-        
-//        let newItem = Item(context: self.context)
-//        newItem.nama = "Nunu"
-//        newItem.alamat = "Purbalingga"
-//        itemArray.append(newItem)
-//
-//        let newItem1 = Item(context: self.context)
-//        newItem1.nama = "Hafid"
-//        newItem1.alamat = "BBS"
-//        itemArray.append(newItem1)
-        
-//        let newItem2 = Item()
-//        newItem2.nama = "Denis"
-//        newItem2.alamat = "Jogja"
-//        itemArray.append(newItem2)
-//
-//        let newItem3 = Item()
-//        newItem3.nama = "Tri"
-//        newItem3.alamat = "Sumatra"
-//        itemArray.append(newItem3)
-//
-//        let newItem4 = Item()
-//        newItem4.nama = "Wilian"
-//        newItem4.alamat = "Magelang"
-//        itemArray.append(newItem4)
-        
         tblView.delegate = self
         tblView.dataSource = self
-        tblView.separatorColor = UIColor.clear
+        //tblView.separatorColor = UIColor.clear
         
        
         
@@ -91,32 +64,63 @@ class ToDoListViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            
+            let alert = UIAlertController(title: "Are U Sure to Delete It?", message: "", preferredStyle: .alert)
+            
+            let action =  UIAlertAction(title: "Delete", style: .default) { (action) in
+                
+                self.context.delete(self.itemArray[indexPath.row])
+                self.itemArray.remove(at: indexPath.row)
+                self.tblView.reloadData()
+            }
+            
+            alert.addAction(action)
+            
+            present(alert, animated: true, completion: nil)
+
+        }
+        
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        var textField = UITextField()
         
-        if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark {
-            tableView.cellForRow(at: indexPath)?.accessoryType = .none
-        } else {
-            tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+        let alert = UIAlertController(title: "Add new List Nama item", message: "", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
+            alert.dismiss(animated: true, completion: nil)
+        }))
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action: UIAlertAction!) in
+            
+            let newItem = Item(context: self.context)
+            newItem.nama = textField.text!
+            
+            self.itemArray[indexPath.row].nama = newItem.nama
+            
+            tableView.deselectRow(at: indexPath, animated: true)
+            self.tblView.reloadData()
+            
+        }))
+        
+        alert.addTextField { (alertTextField) in
+            alertTextField.text = self.itemArray[indexPath.row].nama!
+            textField = alertTextField
         }
+        
+        
+        
+        present(alert, animated: true, completion: nil)
+        
+        
 
-        print("Get Value \(self.itemArray[indexPath.row]) success ")
-
-        
-// alertt pop up
-        
-//        let alert = UIAlertController(title: "Are U Sure to Delete It?", message: "", preferredStyle: .alert)
-//
-//        let action =  UIAlertAction(title: "Delete", style: .default) { (action) in
-//
-//            // di sini adalah apa yg terjadi ketika user klik button dan alert
-//            print("Delete \(self.itemArray[indexPath.row]) success ")
-//        }
-//
-//        alert.addAction(action)
-//
-//        present(alert, animated: true, completion: nil)
-        
     }
     
     @IBAction func btnAdd(_ sender: UIBarButtonItem) {
@@ -126,27 +130,15 @@ class ToDoListViewController: UIViewController, UITableViewDelegate, UITableView
         
         let action =  UIAlertAction(title: "Add Item", style: .default) { (action) in
             
-            // di sini adalah apa yg terjadi ketika user klik button dan alert
-            
-            //save array to pc
-            //self.defaults.set(self.itemArray, value(forKey: "TodoListArray"))
-            
-            
             
             let newItem = Item(context: self.context)
             newItem.nama = textField.text!
             self.itemArray.append(newItem)
             
             
-            
-            //.append(textField.text!)
-            //self.defaults.set(self.itemArray, forKey: "ToDoListArray")
-            
+       
             print("get value \(textField.text!) Success")
-//            print(self.itemArray.count)
-//
-//            print(self.itemArray.count)
-            
+
             self.tblView.reloadData()
         }
         
@@ -160,12 +152,16 @@ class ToDoListViewController: UIViewController, UITableViewDelegate, UITableView
         present(alert, animated: true, completion: nil)
     }
     
+    
+    
     func saveItem(){
         do {
             try context.save()
         } catch {
             print("Error save data")
         }
+        
+        tblView.reloadData()
     }
     
     func loadItem(){
