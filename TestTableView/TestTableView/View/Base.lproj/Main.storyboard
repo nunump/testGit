@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -36,13 +37,23 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alamat" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xx2-eh-Mwz">
+                                                    <rect key="frame" x="184" y="12" width="169" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="ZIG-3F-9OE" firstAttribute="centerY" secondItem="K96-uh-gOk" secondAttribute="centerY" id="5c9-yM-hT5"/>
+                                                <constraint firstItem="Xx2-eh-Mwz" firstAttribute="centerY" secondItem="K96-uh-gOk" secondAttribute="centerY" id="McI-Nm-CKt"/>
                                                 <constraint firstItem="ZIG-3F-9OE" firstAttribute="leading" secondItem="K96-uh-gOk" secondAttribute="leadingMargin" constant="1" id="Zoz-vv-geV"/>
+                                                <constraint firstItem="Xx2-eh-Mwz" firstAttribute="width" secondItem="ZIG-3F-9OE" secondAttribute="height" multiplier="169:21" id="e1h-7d-aC5"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="Xx2-eh-Mwz" secondAttribute="trailing" constant="7" id="eBJ-tm-feH"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="lblAlamat" destination="Xx2-eh-Mwz" id="bEI-aJ-nEd"/>
                                             <outlet property="lblNama" destination="ZIG-3F-9OE" id="R32-Kn-iul"/>
                                         </connections>
                                     </tableViewCell>

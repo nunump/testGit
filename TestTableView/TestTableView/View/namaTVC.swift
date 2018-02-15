@@ -11,6 +11,7 @@ import UIKit
 class namaTVC: UITableViewCell {
 
     @IBOutlet weak var lblNama: UILabel!
+    @IBOutlet weak var lblAlamat: UILabel!
     
     
     override func awakeFromNib() {

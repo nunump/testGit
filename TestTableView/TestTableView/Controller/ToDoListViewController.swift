@@ -12,20 +12,51 @@ class ToDoListViewController: UIViewController, UITableViewDelegate, UITableView
     
     @IBOutlet weak var tblView: UITableView!
     
-    var itemArray = ["Nunu", "Denis", "Hafid", "Entah"]
-    let defaults = UserDefaults.standard
+    var itemArray = [Item]() // isi defaultnya di ambil dari yg ada di func didload
+    //let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+       
+        
+        // isi array defaults, gak usah jg gak papa
+        
+        let newItem = Item()
+        newItem.nama = "Nunu"
+        newItem.alamat = "Purbalingga"
+        itemArray.append(newItem)
+        
+        let newItem1 = Item()
+        newItem1.nama = "Hafid"
+        newItem1.alamat = "BBS"
+        itemArray.append(newItem1)
+        
+        let newItem2 = Item()
+        newItem2.nama = "Denis"
+        newItem2.alamat = "Jogja"
+        itemArray.append(newItem2)
+        
+        let newItem3 = Item()
+        newItem3.nama = "Tri"
+        newItem3.alamat = "Sumatra"
+        itemArray.append(newItem3)
+        
+        let newItem4 = Item()
+        newItem4.nama = "Wilian"
+        newItem4.alamat = "Magelang"
+        itemArray.append(newItem4)
+        
         tblView.delegate = self
         tblView.dataSource = self
         
-        if let item = defaults.array(forKey: "ToDoListArray") as? [String] {
-            itemArray = item
-        }
+       
         
         print("didload show")
+        
+//        if let item = defaults.array(forKey: "ToDoListArray") as? [Item] {
+//            itemArray = item
+//        }
         
     }
     
@@ -39,9 +70,14 @@ class ToDoListViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
+        //if let cell = UITableViewCell(style: .default, reuseIdentifier: "namaTVC") as? namaTVC {
+        
         if let cell = tableView.dequeueReusableCell(withIdentifier: "namaTVC", for: indexPath) as? namaTVC {
         
-        cell.lblNama.text = itemArray[indexPath.row]
+        let item = itemArray[indexPath.row]
+            
+        cell.lblNama.text = item.nama
+        cell.lblAlamat.text = item.alamat
             return cell
         } else {
             return UITableViewCell()
@@ -88,14 +124,21 @@ class ToDoListViewController: UIViewController, UITableViewDelegate, UITableView
             //save array to pc
             //self.defaults.set(self.itemArray, value(forKey: "TodoListArray"))
             
-            self.itemArray.append(textField.text!)
-            self.defaults.set(self.itemArray, forKey: "ToDoListArray")
             
+            
+            let newItem = Item()
+            newItem.nama = textField.text!
+            self.itemArray.append(newItem)
+            
+            
+            
+            //.append(textField.text!)
+            //self.defaults.set(self.itemArray, forKey: "ToDoListArray")
             
             print("get value \(textField.text!) Success")
-            print(self.itemArray.count)
-            
-            print(self.itemArray.count)
+//            print(self.itemArray.count)
+//
+//            print(self.itemArray.count)
             
             self.tblView.reloadData()
         }
